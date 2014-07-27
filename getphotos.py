@@ -30,7 +30,7 @@ while True:
 ##        todate=to_date.strftime("%Y-%m-%d"),
 ##        privacy_filter=3)
         
-    ordinal += days_per_fetch
+    ordinal -= days_per_fetch
 
     #fetch the photos
 ##    for photo in flickr.walk(user_id='36251685@N00',
