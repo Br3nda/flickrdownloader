@@ -29,7 +29,7 @@ while True:
 			  max_taken_date=to_date.strftime("%Y-%m-%d"),
 			  media='photos'):
 			  
-		print "\t\t{title} {url}".format(title=photo.title, url=photo.url)
+		print "Found a photo: \t\t{title} {url}".format(title=photo.title, url=photo.url)
 		folder = '/home/brenda/Photos/{year}/{month}/{day}'.format(year=from_date.strftime("%Y"), month=from_date.strftime("%m"), day=from_date.strftime("%d"))
 	  
 		for i in range(5, len(folder.split('/')) + 1):
@@ -40,12 +40,12 @@ while True:
 		filename = '{folder}/{id}.jpg'.format(folder=folder, id=photo.id)
 		
 		if os.path.exists(filename):
-		    print "\tskipping"
+		    print "\tskipping {filename}".format(filename=filename)
 		else:
 		    largest = photo.getSizes()[-1]
 		    url = largest['source']
-		    print "\t Retrieving {url}".format(url=url)
-		    print "\t" + filename
+		    print "\t Retrieving: {url}".format(url=url)
+		    print "\t Saving to: {filename}".format(filename=filename)
 		    
 		    (filename, headers) = urllib.urlretrieve(url, filename)
 	      
@@ -56,7 +56,7 @@ while True:
 			max_taken_date=to_date.strftime("%Y-%m-%d"),
 			media='videos'):
 		    
-		print "\t\t{title} {url}".format(title=video.title, url=video.url)
+		print "Found a video: \t\t{title} {url}".format(title=video.title, url=video.url)
 		#print video
 		#fetch the photos
 		folder = '{year}-{month}'.format(year=from_date.strftime("%Y"), month=from_date.strftime("%m"))
@@ -74,10 +74,9 @@ while True:
 
 		cd = headers['Content-Disposition']
 		filename = cd.replace('attachment; filename=', '{folder}/'.format(folder=folder))        
-		print filename
 
 		if os.path.exists(filename):
-		    print "\tskipping"
+		    print "\tskipping {filename}".format(filename=filename)
 		    continue
 		print "\t Retrieving {url}".format(url=url)
 
