@@ -4,11 +4,10 @@ import urllib, urllib2
 import argparse
 from datetime import date
 import datetime
-from _config import apikey, apisecret
 import shutil
 import flickr
 import sys
-
+import pexif
 
 
 # Derive from Request class and override get_method to allow a HEAD request.
@@ -25,7 +24,7 @@ def main():
     start_date = date.today()
 
   ordinal =  start_date.toordinal()
-  days_per_fetch=1
+  days_per_fetch=100
 
   while True:
     from_date = date.fromordinal(ordinal)
@@ -67,14 +66,23 @@ def get_photos(from_date, to_date):
     
     if os.path.exists(filename):
         print "\t\t * skipping {filename}".format(filename=filename)
-        return
+    else: 
+      largest = photo.getSizes()[-1]
+      url = largest['source']
+      print "\t\t * Retrieving: {url}".format(url=url)
+      print "\t\t * Saving to: {filename}".format(filename=filename)
+      (filename, headers) = urllib.urlretrieve(url, filename)  
+
+    #for tag in photo.tags:
+    #  print tag.author, tag.text
     
-    largest = photo.getSizes()[-1]
-    url = largest['source']
-    print "\t\t * Retrieving: {url}".format(url=url)
-    print "\t\t * Saving to: {filename}".format(filename=filename)
-    
-    (filename, headers) = urllib.urlretrieve(url, filename)  
+    #Write description 
+    #try:
+    #  img = pexif.JpegFile.fromFile(filename)
+    #  img.exif.primary.ImageDescription = photo.title 
+    #  img.writeFile(filename)
+    #except Exception, e:
+    #  print "Error writing description to file: {e}".format(e=e)
 
 def get_videos(from_date, to_date):
   """
